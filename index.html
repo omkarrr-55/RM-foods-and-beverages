@@ -14,6 +14,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="assets/brand/apple-touch-icon.png" />
     <link rel="manifest" href="site.webmanifest" />
     <meta name="theme-color" content="#00a8c8" />
+    <script>document.documentElement.classList.add('has-js');</script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -22,11 +23,9 @@
     />
     <link
       rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIINfQNz5PSSV7tO0n6P0DWf5D3RYqv1t1Y="
-      crossorigin=""
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
     />
-    <link rel="stylesheet" href="styles.css?v=20260619-final2" />
+    <link rel="stylesheet" href="styles.css?v=20261117-anim" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -52,6 +51,7 @@
     </script>
   </head>
   <body id="top">
+    <div class="scroll-progress-bar" id="scroll-progress" aria-hidden="true"></div>
     <header class="site-header">
       <nav class="nav shell" aria-label="Main navigation">
         <a class="brand" href="#top" aria-label="RM Foods and Beverages home">
@@ -91,12 +91,14 @@
 
         <div class="hero-grid shell">
           <div class="hero-copy-block">
-            <h1>Refreshing India with purity in every bottle.</h1>
-            <p class="lead">
+            <h1 class="hero-title-reveal">
+              Refreshing India with <span class="shimmer-text">purity in every bottle.</span>
+            </h1>
+            <p class="lead hero-lead-reveal">
               From packaged drinking water to flavoured soft drinks, we create dependable beverage
               brands with modern production, hygienic processes, and a growing distribution network.
             </p>
-            <div class="hero-actions">
+            <div class="hero-actions hero-actions-reveal">
               <a class="button primary" href="#brands">Explore Brands</a>
               <a class="button secondary" href="#contact">Partner With Us</a>
             </div>
@@ -115,26 +117,26 @@
       </section>
 
       <section class="metric-band shell" aria-label="Design highlight metrics">
-        <article>
-          <strong>2016</strong>
+        <article data-scroll-reveal>
+          <strong class="counter-val" data-target="2016" data-start="1995">2016</strong>
           <span>Founded in Pune</span>
         </article>
-        <article>
-          <strong>240 BPM</strong>
+        <article data-scroll-reveal>
+          <strong class="counter-val" data-target="240" data-suffix=" BPM">240 BPM</strong>
           <span>Automated production line</span>
         </article>
-        <article>
+        <article data-scroll-reveal>
           <strong>Multi-state</strong>
           <span>Distribution network</span>
         </article>
-        <article>
+        <article data-scroll-reveal>
           <strong>Co-pack</strong>
           <span>Franchise and production partners</span>
         </article>
       </section>
 
       <section class="section intro-section" id="capabilities">
-        <div class="shell intro-grid">
+        <div class="shell intro-grid" data-scroll-reveal>
           <div>
             <p class="eyebrow dark">Capabilities</p>
             <h2>Built to manufacture, package, and scale beverage brands.</h2>
@@ -147,7 +149,7 @@
         </div>
 
         <div class="shell capability-grid">
-          <article class="capability-card water-card">
+          <article class="capability-card water-card" data-scroll-reveal>
             <span class="card-number">01</span>
             <h3>Packaged Drinking Water</h3>
             <p>
@@ -155,7 +157,7 @@
               events, travel, and daily supply with hygiene-focused filling and purification.
             </p>
           </article>
-          <article class="capability-card soft-card">
+          <article class="capability-card soft-card" data-scroll-reveal>
             <span class="card-number">02</span>
             <h3>Flavoured Soft Drinks</h3>
             <p>
@@ -163,7 +165,7 @@
               nimbu, cola, lemon, orange, club soda, and other refreshing flavours.
             </p>
           </article>
-          <article class="capability-card partner-card">
+          <article class="capability-card partner-card" data-scroll-reveal>
             <span class="card-number">03</span>
             <h3>Co-packing &amp; Franchise Manufacturing</h3>
             <p>
@@ -175,7 +177,7 @@
       </section>
 
       <section class="section process-section">
-        <div class="shell intro-grid process-intro-grid">
+        <div class="shell intro-grid process-intro-grid" data-scroll-reveal>
           <div>
             <p class="eyebrow dark">Process Flow</p>
             <h2>Inside the production line.</h2>
@@ -187,7 +189,7 @@
         </div>
 
         <div class="shell process-card-grid">
-          <article class="process-feature-card process-video-feature">
+          <article class="process-feature-card process-video-feature" data-scroll-reveal>
             <span class="card-number">01</span>
             <span class="process-mini-kicker">Live Process Video</span>
             <h3>Bottle prep and line setup</h3>
@@ -214,7 +216,7 @@
             </a>
           </article>
 
-          <article class="process-feature-card process-video-feature">
+          <article class="process-feature-card process-video-feature" data-scroll-reveal>
             <span class="card-number">02</span>
             <span class="process-mini-kicker">Live Process Video</span>
             <h3>Filling, sealing, and packing</h3>
@@ -241,7 +243,7 @@
             </a>
           </article>
 
-          <article class="process-feature-card process-flow-feature">
+          <article class="process-feature-card process-flow-feature" data-scroll-reveal>
             <span class="card-number">03</span>
             <span class="process-mini-kicker">Production Path</span>
             <h3>Controlled process flow</h3>
@@ -266,12 +268,12 @@
       </section>
 
       <section class="section brands-section" id="brands">
-        <div class="shell section-heading">
+        <div class="shell section-heading" data-scroll-reveal>
           <p class="eyebrow dark">Brand Architecture</p>
           <h2>Product portfolio across packaged water and soft drinks.</h2>
         </div>
         <div class="shell brand-grid">
-          <article class="brand-card water-brand aquaizz-brand">
+          <article class="brand-card water-brand aquaizz-brand" data-scroll-reveal>
             <figure class="brand-tile">
               <img src="assets/brand/aquaizz-product-poster-web.jpg" alt="Aquaizz packaged drinking water bottle range" />
             </figure>
@@ -283,7 +285,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card water-brand peculiar-brand">
+          <article class="brand-card water-brand peculiar-brand" data-scroll-reveal>
             <figure class="brand-tile">
               <img src="assets/brand/peculiar-product-poster-web.jpg" alt="Peculiar packaged drinking water bottle range" />
             </figure>
@@ -295,7 +297,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card water-brand rococo-brand">
+          <article class="brand-card water-brand rococo-brand" data-scroll-reveal>
             <figure class="brand-tile">
               <img src="assets/brand/rococo-product-poster-web.jpg" alt="Rococo packaged drinking water bottle range" />
             </figure>
@@ -308,7 +310,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card water-brand oxytrue-brand">
+          <article class="brand-card water-brand oxytrue-brand" data-scroll-reveal>
             <figure class="brand-tile">
               <img src="assets/brand/oxytrue-product-poster-web.jpg" alt="Oxytrue packaged drinking water bottle range" />
             </figure>
@@ -320,7 +322,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card soft-brand mango-brand">
+          <article class="brand-card soft-brand mango-brand" data-scroll-reveal>
             <figure class="brand-tile soft-drink product-shot">
               <img src="assets/brand/double-dhamaal-mango-product-web.jpg" alt="Double Dhamaal Mango soft drink bottle" />
             </figure>
@@ -333,7 +335,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card soft-brand jeera-brand">
+          <article class="brand-card soft-brand jeera-brand" data-scroll-reveal>
             <figure class="brand-tile soft-drink product-shot">
               <img src="assets/brand/double-dhamaal-jeera-product-web.jpg" alt="Double Dhamaal Jeera soft drink bottle" />
             </figure>
@@ -346,7 +348,7 @@
               </div>
             </div>
           </article>
-          <article class="brand-card soft-brand nimbu-brand">
+          <article class="brand-card soft-brand nimbu-brand" data-scroll-reveal>
             <figure class="brand-tile soft-drink product-shot">
               <img src="assets/brand/double-dhamaal-nimbu-pani-product-web.jpg" alt="Double Dhamaal Nimbu Pani soft drink bottle" />
             </figure>
@@ -363,7 +365,7 @@
       </section>
 
       <section class="section quality-section" id="quality">
-        <div class="shell quality-grid">
+        <div class="shell quality-grid" data-scroll-reveal>
           <div>
             <p class="eyebrow">Quality System</p>
             <h2>Certified systems for safe, dependable beverage supply.</h2>
@@ -374,23 +376,23 @@
             </p>
           </div>
           <div class="quality-stack">
-            <article>
+            <article data-scroll-reveal>
               <strong>FSSAI Licensed</strong>
               <span>Food safety licence for beverage manufacturing and supply.</span>
             </article>
-            <article>
+            <article data-scroll-reveal>
               <strong>BIS Certified</strong>
               <span>Packaged drinking water manufactured under BIS certification standards.</span>
             </article>
-            <article>
+            <article data-scroll-reveal>
               <strong>ISO 22000:2018 Certified</strong>
               <span>Food safety management system for controlled beverage production.</span>
             </article>
-            <article>
+            <article data-scroll-reveal>
               <strong>Railway Approved Supply</strong>
               <span>Approved across Central Railway, Eastern Railway, Western Railway, and Konkan Railway.</span>
             </article>
-            <article>
+            <article data-scroll-reveal>
               <strong>Hygiene-Led Production</strong>
               <span>Controlled purification, filling, sealing, packing, and dispatch checks.</span>
             </article>
@@ -400,10 +402,10 @@
 
       <section class="section network-section" id="network">
         <div class="shell network-grid">
-          <div class="map-panel india-map-panel" aria-label="Interactive India network map">
+          <div class="map-panel india-map-panel" data-scroll-reveal aria-label="Interactive India network map">
             <div class="india-leaflet-map" id="india-leaflet-map"></div>
           </div>
-          <div>
+          <div data-scroll-reveal>
             <p class="eyebrow dark">Market Reach</p>
             <h2>Manufacturing partner network across India.</h2>
             <p class="section-lead">
@@ -447,7 +449,7 @@
 
       <section class="contact-strip" id="contact">
         <div class="shell contact-strip-grid">
-          <div class="contact-content">
+          <div class="contact-content" data-scroll-reveal>
             <p class="eyebrow">Contact RM Foods</p>
             <h2>Let’s build a dependable beverage partnership.</h2>
             <p class="contact-lead">
@@ -514,7 +516,7 @@
             </div>
           </div>
 
-          <form class="quick-form" id="enquiry-form">
+          <form class="quick-form" id="enquiry-form" data-scroll-reveal>
             <div class="form-heading">
               <p>Business Enquiry</p>
               <h3>Send your requirement on WhatsApp</h3>
@@ -585,11 +587,7 @@
       </div>
     </footer>
 
-    <script
-      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-      crossorigin=""
-    ></script>
-    <script src="script.js?v=20260619-scrollfix4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="script.js?v=20261117-anim"></script>
   </body>
 </html>

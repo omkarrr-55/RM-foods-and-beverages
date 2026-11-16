@@ -7,6 +7,152 @@ const mapDetail = document.querySelector("#map-detail");
 const mapContainer = document.querySelector("#india-leaflet-map");
 const footerTopLinks = document.querySelectorAll(".footer-top");
 const sectionLinks = document.querySelectorAll('.hero-actions a[href^="#"]');
+const siteHeader = document.querySelector(".site-header");
+const scrollProgressBar = document.querySelector("#scroll-progress");
+const heroSection = document.querySelector(".hero");
+const heroShowcase = document.querySelector(".hero-showcase");
+
+/* --------------------------------------------------------------------------
+   Top Scroll Progress & Sticky Glass Header Animation
+   -------------------------------------------------------------------------- */
+const updateScrollState = () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+
+  if (docHeight > 0 && scrollProgressBar) {
+    const progress = Math.min(Math.max((scrollTop / docHeight) * 100, 0), 100);
+    scrollProgressBar.style.width = `${progress}%`;
+  }
+
+  if (siteHeader) {
+    siteHeader.classList.toggle("is-scrolled", scrollTop > 30);
+  }
+};
+
+let isScrollTicking = false;
+window.addEventListener(
+  "scroll",
+  () => {
+    if (!isScrollTicking) {
+      window.requestAnimationFrame(() => {
+        updateScrollState();
+        isScrollTicking = false;
+      });
+      isScrollTicking = true;
+    }
+  },
+  { passive: true }
+);
+
+updateScrollState();
+
+/* --------------------------------------------------------------------------
+   Scroll-Driven Reveal System (IntersectionObserver)
+   -------------------------------------------------------------------------- */
+const revealElements = document.querySelectorAll("[data-scroll-reveal]");
+if ("IntersectionObserver" in window && revealElements.length) {
+  const revealObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    {
+      rootMargin: "0px 0px -40px 0px",
+      threshold: 0.12,
+    }
+  );
+
+  revealElements.forEach((el) => revealObserver.observe(el));
+} else {
+  revealElements.forEach((el) => el.classList.add("is-revealed"));
+}
+
+/* --------------------------------------------------------------------------
+   Live Metric Number Counters on Scroll
+   -------------------------------------------------------------------------- */
+const metricBand = document.querySelector(".metric-band");
+const counterElements = document.querySelectorAll(".counter-val");
+
+const animateCounters = () => {
+  counterElements.forEach((counter) => {
+    const target = parseInt(counter.getAttribute("data-target"), 10);
+    const start = parseInt(counter.getAttribute("data-start") || "0", 10);
+    const suffix = counter.getAttribute("data-suffix") || "";
+    const duration = 1600;
+    const startTime = performance.now();
+
+    const updateCount = (currentTime) => {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(start + (target - start) * easeProgress);
+
+      counter.textContent = `${current}${suffix}`;
+
+      if (progress < 1) {
+        requestAnimationFrame(updateCount);
+      } else {
+        counter.textContent = `${target}${suffix}`;
+      }
+    };
+
+    requestAnimationFrame(updateCount);
+  });
+};
+
+if (metricBand && "IntersectionObserver" in window) {
+  const metricObserver = new IntersectionObserver(
+    (entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          animateCounters();
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.25 }
+  );
+
+  metricObserver.observe(metricBand);
+}
+
+/* --------------------------------------------------------------------------
+   Hero 3D Tactile Mouse Tilt Interaction
+   -------------------------------------------------------------------------- */
+if (
+  heroSection &&
+  heroShowcase &&
+  window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
+  !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+) {
+  let tiltRaf = null;
+
+  heroSection.addEventListener("mousemove", (event) => {
+    if (tiltRaf) cancelAnimationFrame(tiltRaf);
+
+    tiltRaf = requestAnimationFrame(() => {
+      const rect = heroSection.getBoundingClientRect();
+      const xRatio = (event.clientX - rect.left) / rect.width - 0.5;
+      const yRatio = (event.clientY - rect.top) / rect.height - 0.5;
+
+      const tiltY = (xRatio * 10).toFixed(2);
+      const tiltX = (-yRatio * 10).toFixed(2);
+
+      heroShowcase.style.transform = `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg) translateY(0)`;
+      heroShowcase.style.transition = "transform 0.12s ease-out";
+    });
+  });
+
+  heroSection.addEventListener("mouseleave", () => {
+    if (tiltRaf) cancelAnimationFrame(tiltRaf);
+    heroShowcase.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)";
+    heroShowcase.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+  });
+}
 
 const scrollToSection = (target) => {
   const headerOffset = document.querySelector(".site-header")?.offsetHeight || 0;
@@ -285,9 +431,9 @@ if (mapDetail && mapContainer) {
       zoomControl: true,
     });
 
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
     }).addTo(map);
 
     const locationBounds = L.latLngBounds(locations.map((location) => location.coordinates));
