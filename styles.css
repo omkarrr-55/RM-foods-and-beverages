@@ -2339,32 +2339,32 @@ h3 {
   letter-spacing: -0.04em;
 }
 
-/* Crystal Prismatic Text Highlight (Liquid Water Glass) */
+/* Clean Frosted Text Highlight (Subtle, Crisp, Calm — No Harsh Sparkling Lights) */
 .glass-text-highlight,
 .shimmer-text {
   display: inline;
   background: linear-gradient(
-    115deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(0, 229, 255, 0.95) 25%,
-    rgba(255, 255, 255, 1) 48%,
-    rgba(246, 197, 72, 0.9) 72%,
-    rgba(255, 255, 255, 0.95) 100%
+    175deg,
+    #ffffff 0%,
+    #e8fbff 35%,
+    #b2f0fa 75%,
+    #70dff2 100%
   );
-  background-size: 260% 100%;
+  background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.38)) drop-shadow(0 1px 0 rgba(255, 255, 255, 0.85));
-  animation: glassPrismShine 5.2s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(3, 24, 38, 0.42));
+  letter-spacing: -0.04em;
+  animation: calmSheen 9s ease-in-out infinite;
 }
 
-@keyframes glassPrismShine {
-  0% {
-    background-position: 220% 0;
+@keyframes calmSheen {
+  0%, 75% {
+    background-position: 100% 0;
   }
-  50%, 100% {
-    background-position: -50% 0;
+  100% {
+    background-position: -100% 0;
   }
 }
 
