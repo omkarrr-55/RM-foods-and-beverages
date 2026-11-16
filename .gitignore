@@ -1,0 +1,16 @@
+# Operating System Files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+
+# Impeccable local & runtime directories
+.impeccable/config.local.json
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
