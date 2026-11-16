@@ -317,6 +317,7 @@ h3 {
 }
 
 .hero-showcase {
+  position: relative;
   display: grid;
   gap: 18px;
   width: 100%;
@@ -2597,21 +2598,66 @@ h3 {
 }
 
 
+/* 3. Continuous Mid-Air Levitation & Shadow Sync
+   Zero-Gravity Float: y: -12px to 12px, rotate: -1.5deg to 1.5deg, 4s ease-in-out infinite */
 .product-photo-stage {
-  animation: hydrostaticBuoyancy 6s ease-in-out infinite alternate;
+  animation: zeroGravityFloat 4s ease-in-out infinite;
   animation-delay: 1.35s;
   will-change: transform;
 }
 
-@keyframes hydrostaticBuoyancy {
+@keyframes zeroGravityFloat {
   0% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(12px) rotate(-1.5deg);
   }
   50% {
-    transform: translateY(-9px) rotate(0.4deg);
+    transform: translateY(-12px) rotate(1.5deg);
   }
   100% {
-    transform: translateY(0px) rotate(0deg);
+    transform: translateY(12px) rotate(-1.5deg);
+  }
+}
+
+/* Dynamic Ground Shadow: scales down (scale: 1 -> 0.82) and fades (opacity: 0.5 -> 0.25) in sync as bottles rise */
+.hero-ground-shadow {
+  position: absolute;
+  bottom: -16px;
+  left: 50%;
+  width: 74%;
+  height: 32px;
+  transform: translateX(-50%) scale(1);
+  background: radial-gradient(
+    ellipse at 50% 50%,
+    rgba(3, 24, 38, 0.75) 0%,
+    rgba(3, 24, 38, 0.45) 40%,
+    rgba(3, 24, 38, 0.15) 65%,
+    transparent 80%
+  );
+  filter: blur(12px);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  animation: dynamicGroundShadow 4s ease-in-out infinite;
+  animation-delay: 1.35s;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes dynamicGroundShadow {
+  0% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.5;
+    filter: blur(12px);
+  }
+  50% {
+    transform: translateX(-50%) scale(0.82);
+    opacity: 0.25;
+    filter: blur(18px);
+  }
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.5;
+    filter: blur(12px);
   }
 }
 
