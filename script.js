@@ -160,15 +160,32 @@ if (window.gsap && bottleStage && !window.matchMedia("(prefers-reduced-motion: r
 }
 
 /* --------------------------------------------------------------------------
-   Hero 3D Tactile Mouse Tilt Interaction (Activated only after entrance settles)
+   4. Interactive 3D Tilt on Mouse Hover & Icy Light Glint Sweep
+   - Perspective wrapper: .hero-showcase (perspective: 1000px)
+   - Smooth ±8deg rotateX / rotateY tilt tracking cursor across the hero
+   - Dynamic specular icy light glint sweep across bottles
    -------------------------------------------------------------------------- */
+const bottleTiltStage = document.querySelector(".bottle-tilt-target") || document.querySelector(".product-photo-stage");
+const glintSweep = document.querySelector(".bottle-glint-sweep");
+
 if (
   heroSection &&
-  heroShowcase &&
+  bottleTiltStage &&
   window.matchMedia("(hover: hover) and (pointer: fine)").matches &&
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches
 ) {
   let tiltRaf = null;
+
+  heroSection.addEventListener("mouseenter", () => {
+    if (!flyingEntranceComplete) return;
+    if (glintSweep && window.gsap) {
+      gsap.fromTo(
+        glintSweep,
+        { xPercent: -100, yPercent: -20, opacity: 0 },
+        { xPercent: 15, yPercent: 0, opacity: 0.88, duration: 0.65, ease: "power2.out" }
+      );
+    }
+  });
 
   heroSection.addEventListener("mousemove", (event) => {
     if (!flyingEntranceComplete) return; // Never interrupt the flying entrance!
@@ -176,22 +193,76 @@ if (
 
     tiltRaf = requestAnimationFrame(() => {
       const rect = heroSection.getBoundingClientRect();
+      // xRatio and yRatio: -0.5 (left/top) to +0.5 (right/bottom)
       const xRatio = (event.clientX - rect.left) / rect.width - 0.5;
       const yRatio = (event.clientY - rect.top) / rect.height - 0.5;
 
-      const tiltY = (xRatio * 10).toFixed(2);
-      const tiltX = (-yRatio * 10).toFixed(2);
+      // Smooth tilt up to ±8deg toward the cursor:
+      // Cursor right (+x) -> face turns right (+rotateY) up to +8deg
+      // Cursor left (-x) -> face turns left (-rotateY) down to -8deg
+      // Cursor top (-y) -> face turns up (+rotateX) up to +8deg
+      // Cursor bottom (+y) -> face turns down (-rotateX) down to -8deg
+      const tiltY = Math.max(-8, Math.min(8, xRatio * 16));
+      const tiltX = Math.max(-8, Math.min(8, -yRatio * 16));
 
-      heroShowcase.style.transform = `perspective(1000px) rotateY(${tiltY}deg) rotateX(${tiltX}deg) translateY(0)`;
-      heroShowcase.style.transition = "transform 0.12s ease-out";
+      if (window.gsap) {
+        gsap.to(bottleTiltStage, {
+          rotateY: tiltY,
+          rotateX: tiltX,
+          duration: 0.35,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+
+        if (glintSweep) {
+          gsap.to(glintSweep, {
+            xPercent: xRatio * 80,
+            yPercent: yRatio * 50,
+            opacity: 0.88,
+            duration: 0.4,
+            ease: "power2.out",
+            overwrite: "auto",
+          });
+        }
+      } else {
+        bottleTiltStage.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+        bottleTiltStage.style.transition = "transform 0.15s ease-out";
+        if (glintSweep) {
+          glintSweep.style.transform = `translate3d(${(xRatio * 80).toFixed(1)}%, ${(yRatio * 50).toFixed(1)}%, 30px) rotate(25deg)`;
+          glintSweep.style.opacity = "0.88";
+        }
+      }
     });
   });
 
   heroSection.addEventListener("mouseleave", () => {
     if (!flyingEntranceComplete) return;
     if (tiltRaf) cancelAnimationFrame(tiltRaf);
-    heroShowcase.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)";
-    heroShowcase.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+
+    if (window.gsap) {
+      gsap.to(bottleTiltStage, {
+        rotateY: 0,
+        rotateX: 0,
+        duration: 0.75,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+
+      if (glintSweep) {
+        gsap.to(glintSweep, {
+          xPercent: -60,
+          yPercent: -15,
+          opacity: 0,
+          duration: 0.55,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
+      }
+    } else {
+      bottleTiltStage.style.transform = "rotateX(0deg) rotateY(0deg)";
+      bottleTiltStage.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
+      if (glintSweep) glintSweep.style.opacity = "0";
+    }
   });
 }
 
