@@ -121,7 +121,46 @@ if (metricBand && "IntersectionObserver" in window) {
 }
 
 /* --------------------------------------------------------------------------
-   Hero 3D Tactile Mouse Tilt Interaction
+   2. "Flying" Entrance Animation (On Page Load)
+   Swoop bottle cluster in diagonally from top-right:
+   (x: 100, y: -80, scale: 0.85, rotate: 5deg) -> (x: 0, y: 0, scale: 1, rotate: 0deg)
+   with crisp spring settle physics (duration: 1.0s, stiffness: 110, damping: 14)
+   -------------------------------------------------------------------------- */
+const bottleStage = document.querySelector(".hero-visual-reveal");
+let flyingEntranceComplete = false;
+
+if (window.gsap && bottleStage && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  gsap.fromTo(
+    bottleStage,
+    {
+      x: 100,
+      y: -80,
+      scale: 0.85,
+      rotation: 5,
+      opacity: 0,
+    },
+    {
+      x: 0,
+      y: 0,
+      scale: 1,
+      rotation: 0,
+      opacity: 1,
+      duration: 1.0,
+      delay: 0.35,
+      ease: "back.out(1.6)", // Crisp spring settle physics
+      onComplete: () => {
+        flyingEntranceComplete = true;
+      },
+    }
+  );
+} else {
+  setTimeout(() => {
+    flyingEntranceComplete = true;
+  }, 1400);
+}
+
+/* --------------------------------------------------------------------------
+   Hero 3D Tactile Mouse Tilt Interaction (Activated only after entrance settles)
    -------------------------------------------------------------------------- */
 if (
   heroSection &&
@@ -132,6 +171,7 @@ if (
   let tiltRaf = null;
 
   heroSection.addEventListener("mousemove", (event) => {
+    if (!flyingEntranceComplete) return; // Never interrupt the flying entrance!
     if (tiltRaf) cancelAnimationFrame(tiltRaf);
 
     tiltRaf = requestAnimationFrame(() => {
@@ -148,6 +188,7 @@ if (
   });
 
   heroSection.addEventListener("mouseleave", () => {
+    if (!flyingEntranceComplete) return;
     if (tiltRaf) cancelAnimationFrame(tiltRaf);
     heroShowcase.style.transform = "perspective(1000px) rotateY(0deg) rotateX(0deg) translateY(0)";
     heroShowcase.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
