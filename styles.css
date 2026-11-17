@@ -421,35 +421,6 @@ h3 {
   transform-style: preserve-3d;
 }
 
-/* Subtle Icy Light Glint Sweep Across the Bottles */
-.bottle-glint-sweep {
-  position: absolute;
-  inset: -10%;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 3;
-  background: linear-gradient(
-    130deg,
-    transparent 28%,
-    rgba(255, 255, 255, 0) 38%,
-    rgba(185, 246, 253, 0.22) 46%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(0, 229, 255, 0.28) 54%,
-    transparent 64%
-  );
-  mix-blend-mode: overlay;
-  opacity: 0;
-  transform: translate3d(-100%, -20%, 30px) rotate(25deg);
-  transition: opacity 0.5s ease;
-  will-change: transform, opacity;
-  mask-image: radial-gradient(circle, black 58%, transparent 78%);
-  -webkit-mask-image: radial-gradient(circle, black 58%, transparent 78%);
-}
-
-.hero:hover .bottle-glint-sweep {
-  opacity: 0.88;
-}
-
 /* Subtle Crystalline Icy Water Droplets Suspended on the Bottle Cluster */
 .bottle-droplets-container {
   position: absolute;

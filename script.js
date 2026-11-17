@@ -160,13 +160,11 @@ if (window.gsap && bottleStage && !window.matchMedia("(prefers-reduced-motion: r
 }
 
 /* --------------------------------------------------------------------------
-   4. Interactive 3D Tilt on Mouse Hover & Icy Light Glint Sweep
+   4. Interactive 3D Tilt on Mouse Hover
    - Perspective wrapper: .hero-showcase (perspective: 1000px)
    - Smooth ±8deg rotateX / rotateY tilt tracking cursor across the hero
-   - Dynamic specular icy light glint sweep across bottles
    -------------------------------------------------------------------------- */
 const bottleTiltStage = document.querySelector(".bottle-tilt-target") || document.querySelector(".product-photo-stage");
-const glintSweep = document.querySelector(".bottle-glint-sweep");
 
 if (
   heroSection &&
@@ -175,17 +173,6 @@ if (
   !window.matchMedia("(prefers-reduced-motion: reduce)").matches
 ) {
   let tiltRaf = null;
-
-  heroSection.addEventListener("mouseenter", () => {
-    if (!flyingEntranceComplete) return;
-    if (glintSweep && window.gsap) {
-      gsap.fromTo(
-        glintSweep,
-        { xPercent: -100, yPercent: -20, opacity: 0 },
-        { xPercent: 15, yPercent: 0, opacity: 0.88, duration: 0.65, ease: "power2.out" }
-      );
-    }
-  });
 
   heroSection.addEventListener("mousemove", (event) => {
     if (!flyingEntranceComplete) return; // Never interrupt the flying entrance!
@@ -213,24 +200,9 @@ if (
           ease: "power2.out",
           overwrite: "auto",
         });
-
-        if (glintSweep) {
-          gsap.to(glintSweep, {
-            xPercent: xRatio * 80,
-            yPercent: yRatio * 50,
-            opacity: 0.88,
-            duration: 0.4,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        }
       } else {
         bottleTiltStage.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
         bottleTiltStage.style.transition = "transform 0.15s ease-out";
-        if (glintSweep) {
-          glintSweep.style.transform = `translate3d(${(xRatio * 80).toFixed(1)}%, ${(yRatio * 50).toFixed(1)}%, 30px) rotate(25deg)`;
-          glintSweep.style.opacity = "0.88";
-        }
       }
     });
   });
@@ -247,21 +219,9 @@ if (
         ease: "power2.out",
         overwrite: "auto",
       });
-
-      if (glintSweep) {
-        gsap.to(glintSweep, {
-          xPercent: -60,
-          yPercent: -15,
-          opacity: 0,
-          duration: 0.55,
-          ease: "power2.out",
-          overwrite: "auto",
-        });
-      }
     } else {
       bottleTiltStage.style.transform = "rotateX(0deg) rotateY(0deg)";
       bottleTiltStage.style.transition = "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)";
-      if (glintSweep) glintSweep.style.opacity = "0";
     }
   });
 }
